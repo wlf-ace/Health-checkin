@@ -1,0 +1,109 @@
+
+-- 创建数据库（如果还没创建）
+CREATE DATABASE IF NOT EXISTS health_checkin CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE health_checkin;
+
+-- 食物库表：记录食物基本信息
+CREATE TABLE IF NOT EXISTS foods (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  calories INT NOT NULL COMMENT '每100克卡路里',
+  protein FLOAT DEFAULT 0 COMMENT '每100克蛋白质克数',
+  carbs FLOAT DEFAULT 0 COMMENT '每100克碳水克数',
+  fat FLOAT DEFAULT 0 COMMENT '每100克脂肪克数',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 运动管理表：记录运动项目及消耗卡路里
+CREATE TABLE IF NOT EXISTS exercises (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  calories_burn_per_min FLOAT NOT NULL COMMENT '每分钟消耗卡路里',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 用户每日打卡表：记录每天用户摄入食物和运动消耗
+CREATE TABLE IF NOT EXISTS checkins (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL COMMENT '用户ID，假设你后续扩展用',
+  date DATE NOT NULL COMMENT '打卡日期',
+  total_calories_in INT DEFAULT 0 COMMENT '摄入总卡路里',
+  total_calories_out INT DEFAULT 0 COMMENT '消耗总卡路里',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_user_date (user_id, date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 记录用户每日摄入的食物明细
+CREATE TABLE IF NOT EXISTS checkin_foods (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  checkin_id INT NOT NULL,
+  food_id INT NOT NULL,
+  amount FLOAT NOT NULL COMMENT '食物重量，单位克',
+  calories INT NOT NULL COMMENT '该食物摄入卡路里',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (checkin_id) REFERENCES checkins(id) ON DELETE CASCADE,
+  FOREIGN KEY (food_id) REFERENCES foods(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 记录用户每日运动明细
+CREATE TABLE IF NOT EXISTS checkin_exercises (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  checkin_id INT NOT NULL,
+  exercise_id INT NOT NULL,
+  duration_min INT NOT NULL COMMENT '运动时长，单位分钟',
+  calories_burn INT NOT NULL COMMENT '运动消耗卡路里',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (checkin_id) REFERENCES checkins(id) ON DELETE CASCADE,
+  FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 汇总统计（可以是视图或者后续根据需求写查询）
+-- 这里暂不建表，统计可用 SQL 聚合实现
+
+INSERT INTO foods (name, calories, protein, carbs, fat) VALUES
+('苹果', 52, 0.3, 14, 0.2),
+('香蕉', 89, 1.1, 23, 0.3),
+('煮鸡蛋', 155, 13, 1.1, 11),
+('白米饭', 130, 2.7, 28, 0.3),
+('鸡胸肉', 165, 31, 0, 3.6);
+
+
+INSERT INTO exercises (name, calories_burn_per_min) VALUES
+('快走', 4.5),
+('慢跑', 8),
+('骑自行车', 7),
+('跳绳', 12),
+('瑜伽', 3);
+
+
+INSERT INTO checkins (user_id, date, total_calories_in, total_calories_out) VALUES
+(1, '2025-06-16', 2000, 500);
+
+-- 先查刚刚打卡的ID
+SELECT id FROM checkins WHERE user_id=1 AND date='2025-06-16';
+
+INSERT INTO checkin_foods (checkin_id, food_id, amount, calories) VALUES
+(1, (SELECT id FROM foods WHERE name='白米饭'), 150, ROUND(130 * 1.5)),
+(1, (SELECT id FROM foods WHERE name='鸡胸肉'), 100, ROUND(165 * 1));
+
+INSERT INTO checkin_exercises (checkin_id, exercise_id, duration_min, calories_burn) VALUES
+(1, (SELECT id FROM exercises WHERE name='快走'), 30, ROUND(4.5 * 30)),
+(1, (SELECT id FROM exercises WHERE name='跳绳'), 10, ROUND(12 * 10));
+
+
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,  -- 存储加密后的密码
+  email VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+use health_checkin
+
+ALTER TABLE exercises CHANGE calories_burn_per_min calories_per_hour INT;
+ALTER TABLE users ADD COLUMN email VARCHAR(255) NULL;
+
+
