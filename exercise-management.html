@@ -1,0 +1,112 @@
+33<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动管理 - 健康打卡应用</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="exercise-styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <span>❤️</span>
+                    <span>健康打卡</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="food-management.html" class="nav-link">
+                        🍽️ 食物管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="exercise-management.html" class="nav-link active">
+                        💪 运动管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="daily-checkin.html" class="nav-link">
+                        📅 每日打卡
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="statistics.html" class="nav-link">
+                        📊 汇总统计
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>💪 运动管理</h1>
+            <p>管理您的运动数据库，记录运动消耗信息</p>
+        </div>
+
+        <div class="actions-bar">
+            <button class="btn btn-primary" onclick="showAddExerciseModal()">
+                ➕ 添加运动
+            </button>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="搜索运动..." onkeyup="searchExercises()">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>运动名称</th>
+                        <th>消耗热量 (kcal/小时)</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="exerciseTableBody">
+                    <tr>
+                        <td colspan="3" class="loading">加载中...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- 添加/编辑运动模态框 -->
+    <div id="exerciseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">添加运动</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="exerciseForm">
+                    <input type="hidden" id="exerciseId">
+                    <div class="form-group">
+                        <label>运动名称 *</label>
+                        <input type="text" id="exerciseName" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>消耗热量 (kcal/小时) *</label>
+                            <input type="number" id="exerciseCalories" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="exercise.js"></script>
+    <script src="ai-customer.js"></script>
+</body>
+</html> 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汇总统计 - 健康打卡应用</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="statistics-styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <span>❤️</span>
+                    <span>健康打卡</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="food-management.html" class="nav-link">
+                        🍽️ 食物管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="exercise-management.html" class="nav-link">
+                        💪 运动管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="daily-checkin.html" class="nav-link">
+                        📅 每日打卡
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="statistics.html" class="nav-link active">
+                        📊 汇总统计
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>📊 汇总统计</h1>
+            <p>查看您的健康数据统计和趋势分析</p>
+        </div>
+
+        <!-- 时间范围选择器 -->
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="startDate">开始日期：</label>
+                <input type="date" id="startDate" onchange="updateStatistics()">
+            </div>
+            <div class="filter-group">
+                <label for="endDate">结束日期：</label>
+                <input type="date" id="endDate" onchange="updateStatistics()">
+            </div>
+            <button class="btn btn-primary" onclick="updateStatistics()">🔄 更新统计</button>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-content">
+                    <h3>打卡天数</h3>
+                    <p id="checkinDays">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🍽️</div>
+                <div class="stat-content">
+                    <h3>总摄入热量</h3>
+                    <p id="totalCaloriesIn">0 kcal</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💪</div>
+                <div class="stat-content">
+                    <h3>总消耗热量</h3>
+                    <p id="totalCaloriesOut">0 kcal</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚖️</div>
+                <div class="stat-content">
+                    <h3>净热量</h3>
+                    <p id="netCalories">0 kcal</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="charts-container">
+            <!-- 热量趋势图 -->
+            <div class="chart-section">
+                <h3>📈 热量趋势</h3>
+                <div class="chart-container">
+                    <canvas id="caloriesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详细记录表格 -->
+        <div class="records-container">
+            <h3>📋 详细记录</h3>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>摄入热量</th>
+                            <th>消耗热量</th>
+                            <th>净热量</th>
+                            <th>食物数量</th>
+                            <th>运动数量</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                        <tr>
+                            <td colspan="6" class="loading">加载中...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="statistics.js"></script>
+    <script src="ai-customer.js"></script>
+</body>
+</html> 

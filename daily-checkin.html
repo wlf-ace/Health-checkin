@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日打卡 - 健康打卡应用</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="checkin-styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <span>❤️</span>
+                    <span>健康打卡</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="food-management.html" class="nav-link">
+                        🍽️ 食物管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="exercise-management.html" class="nav-link">
+                        💪 运动管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="daily-checkin.html" class="nav-link active">
+                        📅 每日打卡
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="statistics.html" class="nav-link">
+                        📊 汇总统计
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>📅 每日打卡</h1>
+            <p>记录您每日的饮食和运动情况</p>
+        </div>
+
+        <!-- 日期选择器 -->
+        <div class="date-selector">
+            <label for="checkinDate">选择日期：</label>
+            <input type="date" id="checkinDate" onchange="loadCheckinData()">
+        </div>
+
+        <!-- 打卡表单 -->
+        <div class="checkin-form-container">
+            <div class="form-section">
+                <h3>🍽️ 饮食记录</h3>
+                <div class="food-input-group">
+                    <div class="input-row">
+                        <select id="foodSelect" class="form-control">
+                            <option value="">选择食物...</option>
+                        </select>
+                        <input type="number" id="foodQuantity" placeholder="数量" min="1" class="form-control">
+                        <select id="foodUnit" class="form-control">
+                            <option value="份">份</option>
+                            <option value="克">克</option>
+                            <option value="个">个</option>
+                            <option value="杯">杯</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addFoodItem()">添加</button>
+                    </div>
+                </div>
+                <div class="food-list" id="foodList">
+                    <p class="empty-text">暂无饮食记录</p>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>💪 运动记录</h3>
+                <div class="exercise-input-group">
+                    <div class="input-row">
+                        <select id="exerciseSelect" class="form-control">
+                            <option value="">选择运动...</option>
+                        </select>
+                        <input type="number" id="exerciseDuration" placeholder="时长(分钟)" min="1" class="form-control">
+                        <button class="btn btn-primary" onclick="addExerciseItem()">添加</button>
+                    </div>
+                </div>
+                <div class="exercise-list" id="exerciseList">
+                    <p class="empty-text">暂无运动记录</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-success" onclick="saveCheckin()">💾 保存打卡</button>
+                <button class="btn btn-secondary" onclick="resetForm()">🔄 重置</button>
+            </div>
+        </div>
+
+        <!-- 今日汇总 -->
+        <div class="summary-container">
+            <h3>📊 今日汇总</h3>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-icon">🍽️</div>
+                    <div class="summary-content">
+                        <h4>摄入热量</h4>
+                        <p id="totalCaloriesIn">0 kcal</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">💪</div>
+                    <div class="summary-content">
+                        <h4>消耗热量</h4>
+                        <p id="totalCaloriesOut">0 kcal</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">⚖️</div>
+                    <div class="summary-content">
+                        <h4>净热量</h4>
+                        <p id="netCalories">0 kcal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="checkin.js"></script>
+    <script src="ai-customer.js"></script>
+</body>
+</html> 
