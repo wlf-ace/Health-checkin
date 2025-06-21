@@ -4,8 +4,8 @@ const router = express.Router();
 
 // 讯飞星火API配置
 const API_URL = 'https://spark-api-open.xf-yun.com/v1/chat/completions';
-const API_PASSWORD = 'KCTFFKtwQJPAAOvqCsgV:tKCIvFMUwootpwWnAQoy'; 
-const MODEL = '4.0Ultra'; 
+const API_PASSWORD = ''; //填写你的AIpassword，
+const MODEL = '4.0Ultra'; //作者用的版本是4.0ultra，官方赠送了100000token
 
 
 const WELCOME_MSG = '您好，我是健康打卡AI助手星火，有任何关于饮食、运动、打卡或健康管理的问题，随时可以问我哦！';
