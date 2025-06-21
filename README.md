@@ -49,3 +49,7 @@ health-checkin-app/
 
 注意
 数据库做了比较多修改，没能详细记录下来到底做了哪些修改
+
+
+https://github.com/user-attachments/assets/05d86c4f-899e-4860-923e-927b476e7fa1
+
